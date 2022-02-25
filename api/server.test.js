@@ -58,4 +58,34 @@ describe('Pokemon endpoints work', () => {
         expect(result.status).toBe(200);
         expect(result.body).toHaveLength(3);
     })
+
+    test('[GET] /:id returns the correct pokemon', async () => {
+        let result = await request(server).get('/api/pokemon/1');
+        expect(result.status).toBe(200);
+        expect(result.body.pokemon_name).toBe('Charizard');
+    })
+
+    test('[POST] / creates a new pokemon', async () => {
+        let result = await request(server).post('/api/pokemon').send({ pokemon_name: 'Bidoof'});
+        expect(result.status).toBe(201);
+        expect(result.body.pokemon_name).toBe('Bidoof');
+        let pokemon = await Pokemon.getAll();
+        expect(pokemon).toHaveLength(4);
+    })
+
+    test('[PUT] /:id updates the pokemon', async () => {
+        let result = await request(server).put('/api/pokemon/3').send({ pokemon_name: 'Shiny Bidoof'});
+        expect(result.status).toBe(200);
+        expect(result.body.pokemon_name).toBe('Shiny Bidoof');
+        let pokemon = await Pokemon.getById(3);
+        expect(pokemon.pokemon_name).toBe('Shiny Bidoof');
+    })
+
+    test('[DELETE] /:id deletes the pokemon and return a the deleted pokemon', async () => {
+        let result = await request(server).delete('/api/pokemon/1');
+        expect(result.status).toBe(200);
+        expect(result.body).toEqual({ pokemon_id: 1, pokemon_name: 'Charizard'});
+        let pokemon = await Pokemon.getAll();
+        expect(pokemon).toHaveLength(2);
+    })
 })
