@@ -17,14 +17,14 @@ router.get('/:id', (req, res, next) => {
 })
 
 router.post('/', (req, res, next) => {
-    Pokemon.insert(req.pokemon)
+    Pokemon.insert(req.body)
         .then(pokemon => {
             res.status(201).json(pokemon);
         }).catch(next);
 })
 
 router.put('/:id', (req, res, next) => {
-    Pokemon.update(req.params.id, req.pokemon)
+    Pokemon.update(req.params.id, req.body)
         .then(pokemon => {
             res.status(200).json(pokemon);
         }).catch(next);

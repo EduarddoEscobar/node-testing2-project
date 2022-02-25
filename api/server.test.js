@@ -1,7 +1,7 @@
 const db = require('../data/db-config');
 const server = require('./server');
 const request = require('supertest');
-const Moves = require('./moves/moves-model');
+// const Moves = require('./moves/moves-model');
 const Pokemon = require('./pokemon/pokemon-model');
 
 beforeAll(async () => {
@@ -24,31 +24,31 @@ describe('Pokemon database functions work', () => {
 
     test('getById returns a single pokemon', async () => {
         const result = await Pokemon.getById(1);
-        expect(result).toEqual({ id: 1, name: "Charizard" });
+        expect(result).toEqual({ pokemon_id: 1, pokemon_name: "Charizard" });
     })
 
     test('insert creates a new pokemon and returns the newly created pokemon', async () => {
-        const result = await Pokemon.insert({ name: 'Bidoof' });
-        expect(result).toEqual({ id: 4, name: 'Bidoof' });
+        const result = await Pokemon.insert({ pokemon_name: 'Bidoof' });
+        expect(result).toEqual({ pokemon_id: 4, pokemon_name: 'Bidoof' });
         const pokemon = await Pokemon.getAll();
         expect(pokemon).toHaveLength(4);
     })
 
     test('update updates a pokemon and returns the updated pokemon', async () => {
         let dbPokemon = await Pokemon.getById(2);
-        expect(dbPokemon.name).toBe('Blastoise');
-        const updatedPokemon = await Pokemon.update(2, { name: 'Squirtle' });
-        expect(updatedPokemon).toEqual({ id: 2, name: 'Squirtle'});
+        expect(dbPokemon.pokemon_name).toBe('Blastoise');
+        const updatedPokemon = await Pokemon.update(2, { pokemon_name: 'Squirtle' });
+        expect(updatedPokemon).toEqual({ pokemon_id: 2, pokemon_name: 'Squirtle'});
         dbPokemon = await Pokemon.getById(2);
-        expect(dbPokemon.name).toBe('Squirtle');
+        expect(dbPokemon.pokemon_name).toBe('Squirtle');
     })
 
     test('delete deletes a pokemon and returns the deleted pokemon', async () => {
         let result = await Pokemon.remove(1);
-        expect(result).toEqual({ id: 1, name: 'Charizard' });
+        expect(result).toEqual({ pokemon_id: 1, pokemon_name: 'Charizard' });
         let pokemon = await Pokemon.getAll();
         expect(pokemon).toHaveLength(2);
-        expect(pokemon[0]).not.toEqual({id: 1, name: 'Charizard'});
+        expect(pokemon[0]).not.toEqual({id: 1, pokemon_name: 'Charizard'});
     })
 })
 

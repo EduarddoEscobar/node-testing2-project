@@ -4,8 +4,8 @@ function getAll(){
     return db('pokemon');
 }
 
-function getById(id){
-    return db('pokemon').where({ id }).first();
+function getById(pokemon_id){
+    return db('pokemon').where({ pokemon_id }).first();
 }
 
 function getBy(filter){
@@ -17,14 +17,14 @@ async function insert(pokemon){
     return getById(id);
 }
 
-async function update(id, changes){
-    await db('pokemon').update(changes).where({ id });
-    return getById(id)
+async function update(pokemon_id, changes){
+    await db('pokemon').update(changes).where({ pokemon_id });
+    return getById(pokemon_id)
 }
 
-async function remove(id){
-    let result = await db('pokemon').where({ id }).first();
-    await db('pokemon').where({ id }).del();
+async function remove(pokemon_id){
+    let result = await db('pokemon').where({ pokemon_id }).first();
+    await db('pokemon').where({ pokemon_id }).del();
     return result;
 }
 
